@@ -68,7 +68,7 @@ function App() {
       />
 
       {filteredNotes.length === 0 && (
-        <div className="flex justify-center items-center h-screen">
+        <div className="flex justify-center items-center h-full">
           <p className="text-gray-500 text-center text-2xl font-bold">
             No notes found.
           </p>
@@ -79,18 +79,18 @@ function App() {
         {filteredNotes.map((note, index) => (
           <div
             key={index}
-            className="bg-white p-4 shadow-lg rounded-md cursor-pointer relative overflow-hidden"
+            className="bg-white p-6 shadow-lg rounded-md cursor-pointer relative overflow-hidden"
             onClick={(event) => handleNoteClick(note, event)}
           >
             <div>
-              <h2 className="text-lg font-semibold">{note.title}</h2>
-              <p className="text-gray-700 truncate">{note.content}</p>
+              <h2 className="text-xl font-semibold">{note.title}</h2>
+              <p className="text-gray-700 truncate text-lg">{note.content}</p>
               <br />
               <br />
             </div>
-            <div className="absolute bottom-2 right-2">
+            <div className="absolute bottom-4 right-4">
               <button
-                className="bg-red-500 hover:bg-red-600 text-white font-semibold px-2 py-1 rounded-md delete-button"
+                className="bg-red-500 hover:bg-red-600 text-white font-semibold px-3 py-2 rounded-md delete-button"
                 onClick={() => confirmDeleteNote(note)}
               >
                 Delete
