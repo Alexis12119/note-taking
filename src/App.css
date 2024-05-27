@@ -36,3 +36,64 @@
     transform: rotate(360deg);
   }
 }
+
+:root {
+  --bg-color: #fff;
+  --text-color: #000;
+  --input-bg-color: #fff;
+  --input-text-color: #000;
+  --border-color: #ccc;
+  --card-bg-color: #fff;
+  --card-border-color: #ccc;
+}
+
+.dark {
+  --bg-color: #333;
+  --text-color: #fff;
+  --input-bg-color: #555;
+  --input-text-color: #fff;
+  --border-color: #777;
+  --card-bg-color: #444;
+  --card-border-color: #888;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.container {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+input,
+textarea {
+  background-color: var(--input-bg-color);
+  color: var(--input-text-color);
+  border: 1px solid var(--border-color);
+}
+
+.bg-white {
+  background-color: var(--card-bg-color) !important;
+}
+
+.text-gray-700 {
+  color: var(--text-color) !important;
+}
+
+.border-gray-300 {
+  border-color: var(--border-color) !important;
+}
+
+button {
+  border: 1px solid var(--border-color);
+}
+
+.card {
+  background-color: var(--card-bg-color);
+  border: 1px solid var(--card-border-color);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}

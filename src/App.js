@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import "./App.css";
+import axios from "axios";
 
 function App() {
   const [notes, setNotes] = useState([]);
@@ -9,33 +11,60 @@ function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [noteToDelete, setNoteToDelete] = useState(null);
+  const [theme, setTheme] = useState("light");
 
-  const addNote = () => {
-    if (!title.trim() || !content.trim()) return;
-    setNotes([...notes, { title, content }]);
-    setTitle("");
-    setContent("");
-    setShowAddNoteModal(false);
+  useEffect(() => {
+    document.documentElement.className = theme;
+    fetchNotes();
+  }, [theme]);
+
+  const fetchNotes = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/notes");
+      setNotes(response.data);
+    } catch (error) {
+      console.error("Error fetching notes:", error);
+    }
   };
 
-  const confirmDeleteNote = (note) => {
+  async function addNote() {
+    if (!title.trim() || !content.trim()) return;
+
+    const newNote = {
+      title,
+      content,
+    };
+
+    try {
+      await axios.post("http://localhost:5000/notes/add", newNote);
+      fetchNotes();
+      setTitle("");
+      setContent("");
+      setShowAddNoteModal(false);
+    } catch (error) {
+      console.error("Error adding note:", error);
+    }
+  }
+
+  function confirmDeleteNote(note) {
     setShowDeleteConfirmation(true);
     setNoteToDelete(note);
-  };
+  }
 
-  const deleteNote = () => {
+  function deleteNote() {
     setNotes(notes.filter((note) => note !== noteToDelete));
     setSelectedNote(null);
     setShowDeleteConfirmation(false);
-  };
+  }
 
-  const handleAddNoteButtonClick = () => {
+  function handleAddNoteButtonClick() {
     setSelectedNote(null); // Reset selected note
     setTitle(""); // Reset title
     setContent(""); // Reset content
     setShowAddNoteModal(true);
-  };
-  const handleNoteClick = (note, event) => {
+  }
+
+  function handleNoteClick(note, event) {
     // Check if the clicked element is the delete button
     if (event.target.classList.contains("delete-button")) {
       return;
@@ -43,11 +72,11 @@ function App() {
     setSelectedNote(note);
     setTitle(note.title);
     setContent(note.content);
-  };
+  }
 
-  const handleSearchChange = (e) => {
+  function handleSearchChange(e) {
     setSearchQuery(e.target.value);
-  };
+  }
 
   const filteredNotes = notes.filter(
     (note) =>
@@ -57,7 +86,15 @@ function App() {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-semibold mb-4">Take Notes</h1>
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-3xl font-semibold">Take Notes</h1>
+        <button
+          onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+          className="text-xl"
+        >
+          {theme === "light" ? "🌙" : "☀️"}
+        </button>
+      </div>
 
       <input
         type="text"
@@ -79,7 +116,7 @@ function App() {
         {filteredNotes.map((note, index) => (
           <div
             key={index}
-            className="bg-white p-6 shadow-lg rounded-md cursor-pointer relative overflow-hidden"
+            className="card cursor-pointer relative overflow-hidden"
             onClick={(event) => handleNoteClick(note, event)}
           >
             <div>
@@ -103,7 +140,7 @@ function App() {
       {selectedNote && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
           <div
-            className="bg-white p-8 rounded-md shadow-lg max-w-3xl relative border border-gray-300" // Added border style here
+            className="bg-white p-8 rounded-md shadow-lg max-w-3xl relative border border-gray-300"
             style={{
               minWidth: "400px",
               maxWidth: "600px",
