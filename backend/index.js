@@ -1,32 +1,32 @@
-import express, { json } from 'express';
-import { connect, connection as _connection, Schema, model } from 'mongoose';
-import cors from 'cors';
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
 
 const app = express();
 const port = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors());
-app.use(json());
+app.use(express.json());
 
 // MongoDB Connection
 const uri = 'mongodb+srv://corporalalexis222:o9davrUFPT6DZerm@notes.35amelr.mongodb.net/?retryWrites=true&w=majority&appName=notes';
-connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-const connection = _connection;
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+const connection = mongoose.connection;
 connection.once('open', () => {
   console.log('MongoDB database connection established successfully');
 });
 
 // Schema and Model
-const noteSchema = new Schema({
+const noteSchema = new mongoose.Schema({
   title: String,
   content: String,
 });
 
-const Note = model('Note', noteSchema);
+const Note = mongoose.model('Note', noteSchema);
 
 // Routes
-app.get('/notes', async (_req, res) => {
+app.get('/notes', async (req, res) => {
   try {
     const notes = await Note.find();
     res.json(notes);
