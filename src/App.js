@@ -11,11 +11,13 @@ function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [noteToDelete, setNoteToDelete] = useState(null);
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState(
+    () => localStorage.getItem("theme") || "light",
+  );
 
   useEffect(() => {
     document.documentElement.className = theme;
-    fetchNotes();
+    localStorage.setItem("theme", theme);
   }, [theme]);
 
   const fetchNotes = async () => {
