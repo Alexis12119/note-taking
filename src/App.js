@@ -240,7 +240,6 @@ function App() {
                 setShowAddNoteModal(false);
               }}
             >
-              <FontAwesomeIcon icon={faTimes} />
             </button>
           </div>
         </div>
