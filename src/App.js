@@ -1,6 +1,36 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import axios from "axios";
+import { initializeApp } from "firebase/app";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  updateDoc,
+  deleteDoc,
+  doc,
+  query,
+  onSnapshot,
+} from "firebase/firestore";
+
+// Your web app's Firebase configuration
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCZ5RK_BVc7nIYKbpugMb-xJ059cffFLp0",
+
+  authDomain: "notes-eb8df.firebaseapp.com",
+
+  projectId: "notes-eb8df",
+
+  storageBucket: "notes-eb8df.appspot.com",
+
+  messagingSenderId: "573088404098",
+
+  appId: "1:573088404098:web:0a1cc74b13b1a90aa91a9b",
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 function App() {
   const [notes, setNotes] = useState([]);
@@ -21,45 +51,56 @@ function App() {
     fetchNotes();
   }, [theme]);
 
-  const fetchNotes = async () => {
+  // Fetch notes function
+  async function fetchNotes() {
     try {
-      const response = await axios.get("http://localhost:5000/notes");
-      setNotes(response.data);
+      const snapshot = await getDocs(collection(db, "notes"));
+      const notesData = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setNotes(notesData);
     } catch (error) {
-      console.error("Error fetching notes:", error);
-    }
-  };
-
-  async function addNote() {
-    if (!title.trim() || !content.trim()) return;
-
-    const newNote = {
-      title,
-      content,
-    };
-
-    try {
-      await axios.post("http://localhost:5000/notes/add", newNote);
-      fetchNotes();
-      setTitle("");
-      setContent("");
-      setShowAddNoteModal(false);
-    } catch (error) {
-      console.error("Error adding note:", error);
+      console.error("Error fetching notes: ", error);
     }
   }
+
+  async function addNote() {
+    await addDoc(collection(db, "notes"), { title, content });
+    setShowAddNoteModal(false);
+  }
+
+  async function saveNoteChanges() {
+    await updateDoc(doc(db, "notes", selectedNote.id), { title, content });
+    setSelectedNote(null);
+    setShowAddNoteModal(false);
+  }
+
+  async function deleteNote() {
+    await deleteDoc(doc(db, "notes", noteToDelete.id));
+    setShowDeleteConfirmation(false);
+  }
+
+  useEffect(() => {
+    // Listen for changes in the notes collection
+    const unsubscribe = onSnapshot(collection(db, "notes"), (snapshot) => {
+      const notesData = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setNotes(notesData);
+    });
+
+    // Clean up the listener
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   function confirmDeleteNote(note) {
     setShowDeleteConfirmation(true);
     setNoteToDelete(note);
   }
-
-  function deleteNote() {
-    setNotes(notes.filter((note) => note !== noteToDelete));
-    setSelectedNote(null);
-    setShowDeleteConfirmation(false);
-  }
-
   function handleAddNoteButtonClick() {
     setSelectedNote(null); // Reset selected note
     setTitle(""); // Reset title
@@ -168,13 +209,7 @@ function App() {
             />
             <button
               className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-md mr-2"
-              onClick={() => {
-                const updatedNotes = notes.map((noteItem) =>
-                  noteItem === selectedNote ? { title, content } : noteItem,
-                );
-                setNotes(updatedNotes);
-                setSelectedNote(null);
-              }}
+              onClick={saveNoteChanges}
             >
               Save
             </button>
