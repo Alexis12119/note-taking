@@ -97,3 +97,15 @@ button {
   border-radius: 0.5rem;
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
 }
+
+.ql-toolbar {
+  background-color: white;
+}
+
+.truncate {
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* Number of lines before truncating */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
