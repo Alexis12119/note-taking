@@ -9,11 +9,8 @@ import {
   updateDoc,
   deleteDoc,
   doc,
-  query,
   onSnapshot,
 } from "firebase/firestore";
-
-// Your web app's Firebase configuration
 
 const firebaseConfig = {
   apiKey: "AIzaSyCZ5RK_BVc7nIYKbpugMb-xJ059cffFLp0",
@@ -135,6 +132,7 @@ function App() {
         <button
           onClick={() => setTheme(theme === "light" ? "dark" : "light")}
           className="text-xl"
+          style={{ border: "none" }} // Add this inline style
         >
           {theme === "light" ? "🌙" : "☀️"}
         </button>
