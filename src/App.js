@@ -15,6 +15,8 @@ import NoteList from "./components/NoteList";
 import NoteEditor from "./components/NoteEditor";
 import DeleteConfirmationModal from "./components/DeleteConfirmationModal";
 import ThemeToggle from "./components/ThemeToggle";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCZ5RK_BVc7nIYKbpugMb-xJ059cffFLp0",
@@ -127,11 +129,20 @@ function App() {
 
   return (
     <div className="container mx-auto p-4">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-3xl font-semibold">Take Notes</h1>
-        <ThemeToggle theme={theme} setTheme={setTheme} />
+      <div className="fixed top-0 left-0 w-full bg-white z-10 shadow-md">
+        <div className="flex justify-between items-center py-2 px-4">
+          <h1 className="text-3xl font-semibold">Take Notes</h1>
+          <div className="flex items-center">
+            <ThemeToggle theme={theme} setTheme={setTheme} />
+            <button
+              className="ml-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-full shadow-md"
+              onClick={handleAddNoteButtonClick}
+            >
+              <FontAwesomeIcon icon={faPlus} />
+            </button>
+          </div>
+        </div>
       </div>
-
       <input
         type="text"
         placeholder="Search notes..."
@@ -176,13 +187,6 @@ function App() {
           setShowDeleteConfirmation={setShowDeleteConfirmation}
         />
       )}
-
-      <button
-        className="fixed bottom-4 right-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-full shadow-md"
-        onClick={handleAddNoteButtonClick}
-      >
-        Add Note
-      </button>
     </div>
   );
 }

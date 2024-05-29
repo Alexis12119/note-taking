@@ -1,4 +1,3 @@
-// NoteEditor.js
 import React from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -38,7 +37,10 @@ function NoteEditor({
           overflow: "auto",
         }}
       >
-        <h2 className="text-xl font-semibold mb-4">Edit Note</h2>
+        <h2 className="text-xl font-semibold mb-4">
+          {" "}
+          {isAddingNote ? "Add" : "Save"} Note
+        </h2>
         <input
           type="text"
           placeholder="Title"
