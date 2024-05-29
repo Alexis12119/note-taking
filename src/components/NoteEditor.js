@@ -27,42 +27,46 @@ function NoteEditor({
   ];
 
   return (
-    <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white p-8 rounded-md shadow-lg max-w-3xl relative border border-gray-300">
-        <h2 className="text-xl font-semibold mb-4">
-          {isAddingNote ? "Add" : "Save"} Note
-        </h2>
-        <input
-          type="text"
-          placeholder="Title"
-          className="w-full mb-2 p-2 border-2 border-solid rounded-md"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <ReactQuill
-          value={content}
-          onChange={setContent}
-          className="mb-2"
-          theme="snow"
-          modules={{ toolbar: toolbarOptions }}
-          style={theme === "dark" ? { color: "#fff" } : {}}
-        />
-        <div className="flex justify-between">
-          <button
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-md mr-2"
-            onClick={isAddingNote ? addNote : saveNoteChanges}
-          >
-            {isAddingNote ? "Add" : "Save"}
-          </button>
-          <button
-            className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold px-4 py-2 rounded-md"
-            onClick={() => {
-              setSelectedNote(null);
-              setShowAddNoteModal(false);
-            }}
-          >
-            Cancel
-          </button>
+    <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center p-4">
+      <div className="bg-white p-6 rounded-md shadow-lg w-full max-w-lg relative border border-gray-300 h-3/4">
+        <div className="flex flex-col h-full">
+          <h2 className="text-xl font-semibold mb-4">
+            {isAddingNote ? "Add" : "Save"} Note
+          </h2>
+          <input
+            type="text"
+            placeholder="Title"
+            className="w-full mb-2 p-2 border-2 border-solid rounded-md"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <div className="flex-1 overflow-y-auto mb-4">
+            <ReactQuill
+              value={content}
+              onChange={setContent}
+              className="mb-2 h-full"
+              theme="snow"
+              modules={{ toolbar: toolbarOptions }}
+              style={theme === "dark" ? { color: "#fff" } : {}}
+            />
+          </div>
+          <div className="flex justify-between">
+            <button
+              className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-md mr-2"
+              onClick={isAddingNote ? addNote : saveNoteChanges}
+            >
+              {isAddingNote ? "Add" : "Save"}
+            </button>
+            <button
+              className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold px-4 py-2 rounded-md"
+              onClick={() => {
+                setSelectedNote(null);
+                setShowAddNoteModal(false);
+              }}
+            >
+              Cancel
+            </button>
+          </div>
         </div>
         {isAddingNote && (
           <button
