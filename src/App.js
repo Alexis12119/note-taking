@@ -16,7 +16,7 @@ import NoteEditor from "./components/NoteEditor";
 import DeleteConfirmationModal from "./components/DeleteConfirmationModal";
 import ThemeToggle from "./components/ThemeToggle";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faBars } from "@fortawesome/free-solid-svg-icons";
 import { ColorRing } from "react-loader-spinner";
 
 const firebaseConfig = {
@@ -41,9 +41,10 @@ function App() {
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [noteToDelete, setNoteToDelete] = useState(null);
   const [theme, setTheme] = useState(
-    () => localStorage.getItem("theme") || "light",
+    () => localStorage.getItem("theme") || "light"
   );
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true);
+
   const spinnerColors = theme === "dark"
     ? ["#ffffff", "#cccccc", "#aaaaaa", "#888888", "#666666"]
     : ["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"];
@@ -61,7 +62,7 @@ function App() {
         ...doc.data(),
       }));
       setNotes(notesData);
-      setLoading(false); // Set loading to false once notes are fetched
+      setLoading(false);
     });
 
     return () => {
@@ -71,14 +72,14 @@ function App() {
 
   async function fetchNotes() {
     try {
-      setLoading(true); // Set loading to true when fetching notes
+      setLoading(true);
       const snapshot = await getDocs(collection(db, "notes"));
       const notesData = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
       setNotes(notesData);
-      setLoading(false); // Set loading to false once notes are fetched
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching notes: ", error);
     }
@@ -132,23 +133,16 @@ function App() {
   const filteredNotes = notes.filter(
     (note) =>
       note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      note.content.toLowerCase().includes(searchQuery.toLowerCase()),
+      note.content.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
     <div className="container mx-auto p-4 mb-20">
-      <div className="fixed top-0 left-0 w-full bg-white z-10 shadow-md">
+      <div className="fixed top-0 left-0 w-full bg-white dark:bg-gray-800 z-10 shadow-md">
         <div className="flex justify-between items-center py-2 px-4">
           <h1 className="text-3xl font-semibold">Take Notes</h1>
-          <div className="flex items-center">
+          <div className={`flex-col md:flex-row md:flex md:items-center md:block`}>
             <ThemeToggle theme={theme} setTheme={setTheme} />
-            <input
-              type="text"
-              placeholder="Search notes..."
-              className="ml-2 w-60 p-2 border border-gray-300 rounded-md"
-              value={searchQuery}
-              onChange={handleSearchChange}
-            />
             <button
               className="ml-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-full shadow-md"
               onClick={handleAddNoteButtonClick}
@@ -158,14 +152,16 @@ function App() {
           </div>
         </div>
       </div>
-      {/* I added this */}
-      <input
-        type="text"
-        placeholder="Search notes..."
-        className="ml-2 w-60 p-2 border border-gray-300 rounded-md"
-        value={searchQuery}
-        onChange={handleSearchChange}
-      />
+
+      <div className="mt-20 flex justify-center">
+        <input
+          type="text"
+          placeholder="Search notes..."
+          className="w-80 p-2 border border-gray-300 rounded-md"
+          value={searchQuery}
+          onChange={handleSearchChange}
+        />
+      </div>
 
       <div className="mt-5">
         {loading ? (
