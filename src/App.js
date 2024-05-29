@@ -44,6 +44,9 @@ function App() {
     () => localStorage.getItem("theme") || "light",
   );
   const [loading, setLoading] = useState(true); // Add loading state
+  const spinnerColors = theme === "dark"
+    ? ["#ffffff", "#cccccc", "#aaaaaa", "#888888", "#666666"]
+    : ["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"];
 
   useEffect(() => {
     document.documentElement.className = theme;
@@ -174,7 +177,7 @@ function App() {
               ariaLabel="color-ring-loading"
               wrapperStyle={{}}
               wrapperClass="color-ring-wrapper"
-              colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
+              colors={spinnerColors}
             />
           </div>
         ) : (
