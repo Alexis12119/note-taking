@@ -25,20 +25,11 @@ function NoteEditor({
     ["link", "image", "video"],
     ["clean"],
   ];
+
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
-      <div
-        className="bg-white p-8 rounded-md shadow-lg max-w-3xl relative border border-gray-300"
-        style={{
-          minWidth: "400px",
-          maxWidth: "600px",
-          minHeight: "200px",
-          maxHeight: "80vh",
-          overflow: "auto",
-        }}
-      >
+      <div className="bg-white p-8 rounded-md shadow-lg max-w-3xl relative border border-gray-300">
         <h2 className="text-xl font-semibold mb-4">
-          {" "}
           {isAddingNote ? "Add" : "Save"} Note
         </h2>
         <input
@@ -51,30 +42,49 @@ function NoteEditor({
         <ReactQuill
           value={content}
           onChange={setContent}
-          className="tp mb-2"
+          className="mb-2"
           theme="snow"
           modules={{ toolbar: toolbarOptions }}
           style={theme === "dark" ? { color: "#fff" } : {}}
         />
-        <button
-          className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-md mr-2"
-          onClick={isAddingNote ? addNote : saveNoteChanges}
-        >
-          {isAddingNote ? "Add" : "Save"}
-        </button>
-        <button
-          className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold px-4 py-2 rounded-md"
-          onClick={() => {
-            setSelectedNote(null);
-            setShowAddNoteModal(false);
-          }}
-        >
-          Cancel
-        </button>
-        <button
-          className="absolute top-0 right-0 mt-4 mr-4 bg-transparent border-none cursor-pointer"
-          onClick={addNote}
-        ></button>
+        <div className="flex justify-between">
+          <button
+            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-md mr-2"
+            onClick={isAddingNote ? addNote : saveNoteChanges}
+          >
+            {isAddingNote ? "Add" : "Save"}
+          </button>
+          <button
+            className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold px-4 py-2 rounded-md"
+            onClick={() => {
+              setSelectedNote(null);
+              setShowAddNoteModal(false);
+            }}
+          >
+            Cancel
+          </button>
+        </div>
+        {isAddingNote && (
+          <button
+            className="absolute top-0 right-0 mt-4 mr-4 bg-transparent border-none cursor-pointer"
+            onClick={addNote}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+              />
+            </svg>
+          </button>
+        )}
       </div>
     </div>
   );
