@@ -16,7 +16,7 @@ import NoteEditor from "./components/NoteEditor";
 import DeleteConfirmationModal from "./components/DeleteConfirmationModal";
 import ThemeToggle from "./components/ThemeToggle";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faBars } from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { ColorRing } from "react-loader-spinner";
 
 const firebaseConfig = {
@@ -141,7 +141,7 @@ function App() {
       <div className="fixed top-0 left-0 w-full bg-white dark:bg-gray-800 z-10 shadow-md">
         <div className="flex justify-between items-center py-2 px-4">
           <h1 className="text-3xl font-semibold">Take Notes</h1>
-          <div className={`flex-col md:flex-row md:flex md:items-center md:block`}>
+          <div className={`flex-col md:flex-row md:flex md:items-center`}>
             <ThemeToggle theme={theme} setTheme={setTheme} />
             <button
               className="ml-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-full shadow-md"
