@@ -41,13 +41,14 @@ function App() {
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [noteToDelete, setNoteToDelete] = useState(null);
   const [theme, setTheme] = useState(
-    () => localStorage.getItem("theme") || "light"
+    () => localStorage.getItem("theme") || "light",
   );
   const [loading, setLoading] = useState(true);
 
-  const spinnerColors = theme === "dark"
-    ? ["#ffffff", "#cccccc", "#aaaaaa", "#888888", "#666666"]
-    : ["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"];
+  const spinnerColors =
+    theme === "dark"
+      ? ["#ffffff", "#cccccc", "#aaaaaa", "#888888", "#666666"]
+      : ["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"];
 
   useEffect(() => {
     document.documentElement.className = theme;
@@ -86,21 +87,21 @@ function App() {
   }
 
   async function addNote() {
-    await addDoc(collection(db, "notes"), { title, content });
     setShowAddNoteModal(false);
+    await addDoc(collection(db, "notes"), { title, content });
     fetchNotes();
   }
 
   async function saveNoteChanges() {
+    setShowAddNoteModal(false);
     await updateDoc(doc(db, "notes", selectedNote.id), { title, content });
     setSelectedNote(null);
-    setShowAddNoteModal(false);
     fetchNotes();
   }
 
   async function deleteNote() {
-    await deleteDoc(doc(db, "notes", noteToDelete.id));
     setShowDeleteConfirmation(false);
+    await deleteDoc(doc(db, "notes", noteToDelete.id));
     fetchNotes();
   }
 
@@ -123,7 +124,7 @@ function App() {
     setSelectedNote(note);
     setTitle(note.title);
     setContent(note.content);
-    setShowAddNoteModal(true);
+    //setShowAddNoteModal(true);
   }
 
   function handleSearchChange(e) {
@@ -133,7 +134,7 @@ function App() {
   const filteredNotes = notes.filter(
     (note) =>
       note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      note.content.toLowerCase().includes(searchQuery.toLowerCase())
+      note.content.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
